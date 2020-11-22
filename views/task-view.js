@@ -11,8 +11,9 @@ export const createElement = (template) => {
     const getTemplate = ({id, title, isDone}) => {
       return `
         <li class="task ${isDone ? `task--complete` : ``}">
-          <label htmlFor="${id}">${title}
+          <label htmlFor="${id}">
             <input id="${id}" type="checkbox" ${isDone ? `checked` : ``} />
+            ${title}
           </label>
         </li>`;
     };
