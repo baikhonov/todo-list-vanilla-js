@@ -10,30 +10,30 @@ const clearTaskButtonElement = mainElement.querySelector(`.clear-task-button`);
 const tasksListElement = mainElement.querySelector(`.tasks`);
 
 const taskModel = new TaskModel([
-    {
-        id: nanoid(),
-        title: `Вынести мусор`,
-        isDone: false,
-    },
-    {
-        id: nanoid(),
-        title: `Защитить интенсив на соточку`,
-        isDone: true,
-    }
+  {
+    id: nanoid(),
+    title: `Вынести мусор`,
+    isDone: false,
+  },
+  {
+    id: nanoid(),
+    title: `Защитить интенсив на соточку`,
+    isDone: true,
+  }
 ]);
 
 const taskPresenter = new TaskPresenter(tasksListElement, taskModel);
 
 const addTaskButtonHandler = (evt) => {
-    evt.preventDefault();
-    const { value: newTaskTitle } = newTaskElement;
-    newTaskElement.value = ``;
-    newTaskElement.focus();
-    taskPresenter.addTask(newTaskTitle);
+  evt.preventDefault();
+  const { value: newTaskTitle } = newTaskElement;
+  newTaskElement.value = ``;
+  newTaskElement.focus();
+  taskPresenter.addTask(newTaskTitle);
 };
 
 const clearTaskButtonHandler = () => {
-    taskPresenter.clearTasks();
+  taskPresenter.clearTasks();
 };
 
 addTaskButtonElement.addEventListener(`click`, addTaskButtonHandler);

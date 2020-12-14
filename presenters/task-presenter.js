@@ -1,42 +1,44 @@
 import TaskView from '../views/task-view.js';
 
-const TaskPresenter = function (element, model) {
-  this._element = element;
-  this._model = model;
-};
+ class TaskPresenter {
+  constructor (element, model) {
+    this._element = element;
+    this._model = model;
+  };
 
-TaskPresenter.prototype.render = function () {
-  const newFragment = document.createDocumentFragment();
-  this._element.innerHTML = ``;
+  render() {
+    const newFragment = document.createDocumentFragment();
+    this._element.innerHTML = ``;
 
-  this._model.getItems().forEach((task) => {
+    this._model.getItems().forEach((task) => {
 
-    const taskView = new TaskView(task);
-    const newElement = taskView.getElement();
-    taskView.bindListeners(({ target }) => {
-      this._model.complete(target.id);
-      taskView.removeElement();
-      this.render();
+      const taskView = new TaskView(task);
+      const newElement = taskView.getElement();
+      taskView.bindListeners(({ target }) => {
+        this._model.complete(target.id);
+        taskView.removeElement();
+        this.render();
+      });
+
+      newFragment.appendChild(newElement);
     });
 
-    newFragment.appendChild(newElement);
-  });
+    this._element.appendChild(newFragment);
+  };
 
-  this._element.appendChild(newFragment);
-};
+  addTask(title) {
+    if (title.trim() === ``) {
+      return;
+    }
 
-TaskPresenter.prototype.addTask = function (title) {
-  if (title.trim() === ``) {
-    return;
-  }
+    this._model.add(title);
+    this.render();
+  };
 
-  this._model.add(title);
-  this.render();
-};
-
-TaskPresenter.prototype.clearTasks = function () {
-  this._model.clear();
-  this.render();
-};
+  clearTasks() {
+    this._model.clear();
+    this.render();
+  };
+}
 
 export default TaskPresenter;

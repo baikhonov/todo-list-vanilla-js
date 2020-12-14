@@ -24,12 +24,19 @@ body {
     padding-bottom: 20px;
 }
 
+.controls {
+  margin-bottom: 1rem;
+}
 
 .tasks {
     padding: 0;
     margin: 0;
     font-size: 1.4em;
     list-style: none;
+}
+
+.task {
+  margin-bottom: 0.3rem;
 }
 
 .task--complete {
