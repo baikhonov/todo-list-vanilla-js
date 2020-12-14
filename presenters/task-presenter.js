@@ -1,43 +1,42 @@
-import view from '../views/task-view.js';
+import TaskView from '../views/task-view.js';
 
-export default () => (element, model) => {
+const TaskPresenter = function (element, model) {
+  this._element = element;
+  this._model = model;
+};
 
-  const render = () => {
-    const newFragment = document.createDocumentFragment();
-    element.innerHTML = ``;
+TaskPresenter.prototype.render = function () {
+  const newFragment = document.createDocumentFragment();
+  this._element.innerHTML = ``;
 
-    model.getItems().forEach((task) => {
-      const newTaskView = view()();
-      const newElement = newTaskView.getElement(task);
-      newTaskView.bindListeners(({target}) => {
-        model.complete(target.id);
-        newTaskView.removeElement();
-        render(model.getItems());
-      });
+  this._model.getItems().forEach((task) => {
 
-      newFragment.appendChild(newElement);
+    const taskView = new TaskView(task);
+    const newElement = taskView.getElement();
+    taskView.bindListeners(({ target }) => {
+      this._model.complete(target.id);
+      taskView.removeElement();
+      this.render();
     });
 
-    element.appendChild(newFragment);
-  };
+    newFragment.appendChild(newElement);
+  });
 
-  const addTask = (title) => {
-    if (title.trim() === ``) {
-      return;
-    }
-
-    model.add(title);
-    render();
-  };
-
-  const clearTasks = () => {
-    model.clear();
-    render();
-  };
-
-  return {
-    addTask,
-    render,
-    clearTasks,
-  };
+  this._element.appendChild(newFragment);
 };
+
+TaskPresenter.prototype.addTask = function (title) {
+  if (title.trim() === ``) {
+    return;
+  }
+
+  this._model.add(title);
+  this.render();
+};
+
+TaskPresenter.prototype.clearTasks = function () {
+  this._model.clear();
+  this.render();
+};
+
+export default TaskPresenter;

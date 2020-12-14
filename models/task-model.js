@@ -1,39 +1,28 @@
 import { nanoid } from '../vendor/nanoid.js';
 
-export default () => () => {
+const TaskModel = function (initialTasks = []) {
+  this._tasks = [...initialTasks];
+};
 
-    let tasks = [
-      {
-        id: nanoid(),
-        title: `Вынести мусор`,
-        isDone: false,
-      },
-      {
-        id: nanoid(),
-        title: `Защитить интенсив на соточку`,
-        isDone: true,
-      }
-    ];
-  
-    const add = (title) => (tasks.push({
-      id: nanoid(),
-      title,
-      isDone: false,
-    }));
-  
-    const clear = () => (tasks = []);
-  
-    const complete = (id) => {
-      const existTask = tasks.find((task) => task.id === id);
-      existTask.isDone = !existTask.isDone;
-    };
-  
-    const getItems = () => tasks;
-  
-    return {
-      add,
-      clear,
-      complete,
-      getItems,
-    };
-  };
+TaskModel.prototype.add = function (title) {
+  this._tasks.push({
+    id: nanoid(),
+    title,
+    isDone: false,
+  });
+};
+
+TaskModel.prototype.clear = function () {
+  this._tasks = [];
+};
+
+TaskModel.prototype.complete = function (id) {
+  const existTask = this._tasks.find((task) => task.id === id);
+  existTask.isDone = !existTask.isDone;
+};
+
+TaskModel.prototype.getItems = function () {
+  return this._tasks;
+};
+
+export default TaskModel;
